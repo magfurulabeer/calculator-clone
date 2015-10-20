@@ -4,8 +4,10 @@ var operator = null;
 var decimal = false;
 var cleared = true;
 var counter = 0;
-var newOperation = false;
+var newOperation = true;
+var prevNum = null;
 var buttons = document.getElementsByTagName("button");
+
 
 for (var i = 0; i < buttons.length; i++) {
 	switch(buttons[i].classList[0]) {
@@ -56,8 +58,8 @@ function clear() {
 	decimal = false;
 	cleared = true;
 	counter = 0;
-	newOperation = false;
-
+	newOperation = true;
+	removeActive();
 	display();
 }
 
@@ -88,17 +90,20 @@ function setOperation() {
 
 	if(value === null) { 
 		value = Number(input.join(''));
-		input = [];
 	} else {
-		operate();
-		display();
-		input = [];
-	}	
+		if(newOperation) {
+			operate();
+			display();
+		} else {
+			display();
+		}
+	}
+	input = [];
+	newOperation = true;
 }
 
 function operate() {
 	var num = Number(input.join(''));
-
 	switch(operator) {
 		case "multiply":
 			value = multiply(value,num);
@@ -114,17 +119,25 @@ function operate() {
 			break;	
 	}
 	input = [value];
+	return num;
 }
 
 //TODO: functionality after clicking twice or at wrong time
 function equals() {
 	removeActive();
-	operate();
+	if(!newOperation) {
+		input = [prevNum];
+	}
+	prevNum = operate();
 	display();
+	newOperation = false;
 }
 
 function removeActive() {
-	document.getElementsByClassName("active")[0].classList.remove("active");
+	var activeElements = document.getElementsByClassName("active");
+	if(activeElements.length > 0) {
+		activeElements[0].classList.remove("active");
+	}	
 }
 
 function multiply(a,b) {
