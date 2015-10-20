@@ -67,3 +67,7 @@ button {
 	background-color: #f48e12;
 	color: #fff;
 }
+
+.active {
+	border: 2px solid black;
+}

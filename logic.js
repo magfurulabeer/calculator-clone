@@ -1,20 +1,16 @@
-var value = 0;
-var x = [0];
-var y = [];
+var value = null;
+var input = [0];
 var operator = null;
 var decimal = false;
 var cleared = true;
-
+var counter = 0;
+var newOperation = false;
 var buttons = document.getElementsByTagName("button");
 
 for (var i = 0; i < buttons.length; i++) {
-
-	switch(buttons[i].className) {
+	switch(buttons[i].classList[0]) {
 		case "number":
 			buttons[i].addEventListener("click", numClick);
-			break;
-		case "operator":
-			buttons[i].addEventListener("click", setOperator);
 			break;
 		case "clear":
 			buttons[i].addEventListener("click", clear);
@@ -22,50 +18,132 @@ for (var i = 0; i < buttons.length; i++) {
 		case "decimal":
 			buttons[i].addEventListener("click", decimalClick);
 			break;
+		case "posneg":
+			buttons[i].addEventListener("click", toggleNegative);
+			break;
+		case "operator":
+			buttons[i].addEventListener("click", setOperation);
+			break;
+		case "equals":
+			buttons[i].addEventListener("click", equals);
+			break;
 	}
-
-	
 }
 
-function compileNumber(numArray) {
-	return Number(numArray.join(''));
-};
+display();
 
-function display(numArray) {
-	document.getElementById("screen").innerHTML = numArray.join('');
-};
-
-function decimalClick() {
-	if(!decimal) {
-		x.push(".");
-		decimal = true;
-	}
-	display(x);
-};
 
 function numClick() {
 	if(cleared) {
-		x.pop();
+		input.pop();
 		cleared = false;	
 	}
-	x.push(this.innerHTML);
-	display(x);
+
+	/*if(newOperation) { 
+		value = Number(input.join(''));
+		input = []; 
+		newOperation = false;
+	}*/
 	
+	input.push(this.innerHTML);
+	display();	
 };
 
 function clear() {
-	x = [0];
-	y = [];
-	operator = null;	
+	value = null;
+	input = [0];
+	operator = null;
 	decimal = false;
-	display(x);
 	cleared = true;
-};
+	counter = 0;
+	newOperation = false;
 
-function setOperator() {
-	alert("operation");
-};
+	display();
+}
 
+function decimalClick() {
+	if(!decimal) {
+		input.push(".")
+		decimal = true;
+		if(cleared) { cleared = false; }
+	}
+	display();
+}
 
+function toggleNegative() {
+	if(input[0] === "-") {
+		input.shift()
+	} else {
+		input.unshift("-")
+	}
+	display();
+}
 
-clear();
+function setOperation() {
+	if(operator !== null) {
+		removeActive();
+	}
+	operator = this.id;
+	this.classList.add("active");
+
+	if(value === null) { 
+		value = Number(input.join(''));
+		input = [];
+	} else {
+		operate();
+		display();
+		input = [];
+	}	
+}
+
+function operate() {
+	var num = Number(input.join(''));
+
+	switch(operator) {
+		case "multiply":
+			value = multiply(value,num);
+			break;
+		case "divide":
+			value = divide(value,num);			
+			break;
+		case "subtract":
+			value = subtract(value,num);
+			break;
+		case "add":
+			value = add(value,num);
+			break;	
+	}
+	input = [value];
+}
+
+//TODO: functionality after clicking twice or at wrong time
+function equals() {
+	removeActive();
+	operate();
+	display();
+}
+
+function removeActive() {
+	document.getElementsByClassName("active")[0].classList.remove("active");
+}
+
+function multiply(a,b) {
+	return a * b;
+}
+
+function divide(a,b) {
+	return a / b;
+}
+
+function subtract(a,b) {
+	return a - b;
+}
+
+function add(a,b) {
+	return a + b;
+}
+
+function display() {
+	console.log(input.join(''))
+	document.getElementById("screen").innerHTML = input.join('');
+}
