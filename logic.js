@@ -211,23 +211,29 @@ function egg() {
 	document.getElementById("screen").style.fontSize = "20px";
 	ee = true;
 	var easter;
-	var random = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
-	switch(random) {
-		case 1:
-			easter = "Mathematical!"
-			break;
-		case 2:
-			easter = "Algebraic!"
-			break;
-		case 3:
-			easter = "CAN NOT COMPUTE!"
-			break;
-		case 4:
-			easter = "1001000 1101001!"
-			break;
-		case 5:
-			easter = "I AM CALCULATOR!"
-			break;
+	if(input.join('') === "1314") {
+		easter = "Forever";
+	} else if(input.join('') === "1012") {
+		easter = "Happy Birthday!";
+	} else {
+		var random = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+		switch(random) {
+			case 1:
+				easter = "Mathematical!"
+				break;
+			case 2:
+				easter = "Algebraic!"
+				break;
+			case 3:
+				easter = "CAN NOT COMPUTE!"
+				break;
+			case 4:
+				easter = "1001000 1101001!"
+				break;
+			case 5:
+				easter = "I AM CALCULATOR!"
+				break;
+		}
 	}
 	input = [easter];
 	display();
