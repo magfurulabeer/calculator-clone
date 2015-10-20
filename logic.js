@@ -215,6 +215,9 @@ function egg() {
 		easter = "Forever";
 	} else if(input.join('') === "1012") {
 		easter = "Happy Birthday!";
+	} else if(input.join('') === "420") {
+		// This is a joke.
+		easter = "Smoke Weed Everyday!";
 	} else {
 		var random = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
 		switch(random) {
