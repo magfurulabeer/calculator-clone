@@ -1,13 +1,13 @@
 var value = null;
 var input = [0];
 var operator = null;
-var decimal = false;
-var cleared = true;
+var size = 2.5;
 var counter = 0;
 var newOperation = true;
 var prevNum = null;
 var buttons = document.getElementsByTagName("button");
-
+var ee = false;
+home();
 
 for (var i = 0; i < buttons.length; i++) {
 	switch(buttons[i].classList[0]) {
@@ -29,26 +29,35 @@ for (var i = 0; i < buttons.length; i++) {
 		case "equals":
 			buttons[i].addEventListener("click", equals);
 			break;
+		case "percent":
+			buttons[i].addEventListener("click", percentage);
+			break;
+		case "home":
+			buttons[i].addEventListener("click", egg);
+			break;
 	}
 }
 
 display();
 
+Array.prototype.includes = function(item) {
+	for(var i = 0; i < this.length; i++) {
+		if(this[i] === item) {
+			return true;
+		}
+	}
+	return false;
+};
 
 function numClick() {
-	if(cleared) {
-		input.pop();
-		cleared = false;	
-	}
-
-	/*if(newOperation) { 
-		value = Number(input.join(''));
-		input = []; 
+	if(!ee) {
+		if(newOperation) {
+			input = [];	
+		}
+		input.push(this.innerHTML);
+		display();	
 		newOperation = false;
-	}*/
-	
-	input.push(this.innerHTML);
-	display();	
+	}
 };
 
 function clear() {
@@ -56,50 +65,77 @@ function clear() {
 	input = [0];
 	operator = null;
 	decimal = false;
-	cleared = true;
+	ee = false;
 	counter = 0;
 	newOperation = true;
 	removeActive();
+	reset();
 	display();
+
 }
 
 function decimalClick() {
-	if(!decimal) {
-		input.push(".")
-		decimal = true;
-		if(cleared) { cleared = false; }
+	if(!ee) {
+		if(!input.includes(".")) {
+			input.push(".");
+		}
+		display();
 	}
-	display();
+}
+
+function percentage() {
+	if(!ee) {
+		var num = Number(input.join(''));
+		num = num * .01;
+		input = String(num).split('');
+		display();
+	}
 }
 
 function toggleNegative() {
-	if(input[0] === "-") {
-		input.shift()
-	} else {
-		input.unshift("-")
+	if(!newOperation) {
+		if(input[0] === "-") {
+			input.shift()
+		} else if (input[0][0] === "-") {
+			//TODO: if input[0] is value, do not add new - sign
+		} else {
+			input.unshift("-")
+		}
 	}
 	display();
 }
 
 function setOperation() {
+	// If an operator button is active, remove the active class
 	if(operator !== null) {
 		removeActive();
+	} else {
+		// Change operator to this if there is no operator
+		operator = this.id;
 	}
-	operator = this.id;
+
+	
+
+	// Add the active class to the operator button clicked
 	this.classList.add("active");
 
+	//alert(input);
+	//console.log("input = " + input);
+	//console.log("newOperation: " + newOperation);
+
+	// If internal value is null, give it the value of the input so far
 	if(value === null) { 
 		value = Number(input.join(''));
 	} else {
-		if(newOperation) {
+		if(!newOperation && input !== []) {
 			operate();
 			display();
-		} else {
-			display();
-		}
+		} 
 	}
-	input = [];
+	
 	newOperation = true;
+	// Set operator to this after the previous operation has been done
+	operator = this.id;
 }
 
 function operate() {
@@ -118,19 +154,21 @@ function operate() {
 			value = add(value,num);
 			break;	
 	}
-	input = [value];
+	input = String(value).split('');
 	return num;
 }
 
-//TODO: functionality after clicking twice or at wrong time
+
 function equals() {
-	removeActive();
-	if(!newOperation) {
-		input = [prevNum];
+	if(value !== null && !ee) {
+		removeActive();
+		if(newOperation) {
+			input = [prevNum];
+		}
+		prevNum = operate();
+		display();
+		newOperation = true;
 	}
-	prevNum = operate();
-	display();
-	newOperation = false;
 }
 
 function removeActive() {
@@ -157,6 +195,45 @@ function add(a,b) {
 }
 
 function display() {
-	console.log(input.join(''))
-	document.getElementById("screen").innerHTML = input.join('');
+	var output = input.join('');
+	if(output.length > 6 && !ee) {
+		output = Number(output).toExponential();
+	} 
+	document.getElementById("screen").innerHTML = output;
+}
+
+function home() {
+	var homeButton = "<button class ='home'></button>"
+	document.getElementById("iphone").innerHTML += homeButton;
+}
+
+function egg() {
+	document.getElementById("screen").style.fontSize = "20px";
+	ee = true;
+	var easter;
+	var random = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+	switch(random) {
+		case 1:
+			easter = "Mathematical!"
+			break;
+		case 2:
+			easter = "Algebraic!"
+			break;
+		case 3:
+			easter = "CAN NOT COMPUTE!"
+			break;
+		case 4:
+			easter = "1001000 1101001!"
+			break;
+		case 5:
+			easter = "I AM CALCULATOR!"
+			break;
+	}
+	input = [easter];
+	display();
+}
+
+function reset() {
+	document.getElementById("screen").style.fontSize = "40px";
+
 }
