@@ -7,6 +7,7 @@ var newOperation = true;
 var prevNum = null;
 var buttons = document.getElementsByTagName("button");
 var ee = false;
+var fontSize = 40;
 home();
 
 for (var i = 0; i < buttons.length; i++) {
@@ -200,6 +201,10 @@ function display() {
 		output = Number(output).toExponential();
 	} 
 	document.getElementById("screen").innerHTML = output;
+	while(isOverflowed(document.getElementById("screen"))) {
+		fontSize--;
+		setSize(fontSize);
+	}
 }
 
 function home() {
@@ -242,7 +247,15 @@ function egg() {
 	display();
 }
 
-function reset() {
-	document.getElementById("screen").style.fontSize = "40px";
+function setSize(num) {
+	document.getElementById("screen").style.fontSize = String(num) + "px";
+}
 
+function reset() {
+	fontSize = 40;
+	setSize(fontSize);
+}
+
+function isOverflowed(element){
+    return element.scrollWidth > element.clientWidth;
 }
