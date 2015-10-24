@@ -200,7 +200,8 @@ function display() {
 	if(output.length > 6 && !ee) {
 		output = Number(output).toExponential();
 	} 
-	document.getElementById("screen").innerHTML = output;
+	var text = "<p>TEXT</p>";
+	document.getElementById("screen").innerHTML = text.replace("TEXT",output)
 	while(isOverflowed(document.getElementById("screen"))) {
 		fontSize--;
 		setSize(fontSize);
