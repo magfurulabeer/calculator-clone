@@ -8,6 +8,7 @@ var prevNum = null;
 var buttons = document.getElementsByTagName("button");
 var ee = false;
 var fontSize = 40;
+var padding = 0;
 home();
 
 for (var i = 0; i < buttons.length; i++) {
@@ -196,15 +197,22 @@ function add(a,b) {
 }
 
 function display() {
+	if(fontSize!==40 || padding !== 0) { reset(); }
 	var output = input.join('');
-	if(output.length > 6 && !ee) {
-		output = Number(output).toExponential();
-	} 
 	var text = "<p>TEXT</p>";
+	if(output.length > 12 && !ee) {
+		output = Number(output).toExponential();
+	} 	
 	document.getElementById("screen").innerHTML = text.replace("TEXT",output)
+	autoSmall();
+}
+
+function autoSmall() {
 	while(isOverflowed(document.getElementById("screen"))) {
 		fontSize--;
 		setSize(fontSize);
+		padding++;
+		setPadding(padding);
 	}
 }
 
@@ -214,7 +222,7 @@ function home() {
 }
 
 function egg() {
-	document.getElementById("screen").style.fontSize = "20px";
+	//document.getElementById("screen").style.fontSize = "20px";
 	ee = true;
 	var easter;
 	if(input.join('') === "1314") {
@@ -252,11 +260,17 @@ function setSize(num) {
 	document.getElementById("screen").style.fontSize = String(num) + "px";
 }
 
+function setPadding(num) {
+	document.getElementById("screen").getElementsByTagName("p")[0].style.paddingTop = String(num) + "px";
+}
+
 function reset() {
 	fontSize = 40;
 	setSize(fontSize);
+	padding = 0;
+	setPadding(padding);
 }
 
 function isOverflowed(element){
-    return element.scrollWidth > element.clientWidth;
+    return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
 }

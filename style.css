@@ -39,6 +39,10 @@ body {
 	font-size: 40px;
 }
 
+#screen p {
+	padding-top: 0;
+}
+
 #keypad {
 	width:200px;
 	height: 250px;
