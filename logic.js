@@ -225,30 +225,71 @@ function egg() {
 	//document.getElementById("screen").style.fontSize = "20px";
 	ee = true;
 	var easter;
-	if(input.join('') === "1314") {
-		easter = "Forever";
-	} else if(input.join('') === "1012") {
-		easter = "Happy Birthday!";
-	} else if(input.join('') === "420") {
-		// This is a joke.
-		easter = "Smoke Weed Everyday!";
+	var codes = ["1314", "1012", "420", "1031", "1225", "3.14"]
+	var inputString = input.join('');
+	if(codes.includes(inputString)) {
+		 switch(inputString) {
+		 	case "1012":
+				easter = "Happy Birthday!";
+				break;
+			case "1314":
+				easter = "Forever";
+				break;
+			case "420":
+				// This is a joke.
+				easter = "Smoke Weed Everyday!";
+				break;
+			case "1031":
+				easter = "Happy Halloween!";
+				break;
+			case "1225":
+				easter = "Merry Christmas!";
+				break;
+			case "3.14":
+				easter = "Happy PI day!";
+				break;
+			case "314":
+				easter = "I want pie.";
+				break;
+			case "0.":
+				easter = "I see you point.";
+				break;
+			case "80085":
+				easter = "I'm telling your mom!";
+				break;
+		 }
 	} else {
-		var random = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+		var random = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
 		switch(random) {
 			case 1:
-				easter = "Mathematical!"
+				easter = "Mathematical!";
 				break;
 			case 2:
-				easter = "Algebraic!"
+				easter = "Algebraic!";
 				break;
 			case 3:
-				easter = "CAN NOT COMPUTE!"
+				easter = "DOES NOT COMPUTE!";
 				break;
 			case 4:
-				easter = "1001000 1101001!"
+				easter = "1001000 1101001!";
 				break;
 			case 5:
-				easter = "I AM CALCULATOR!"
+				easter = "Have some &pi;";
+				break;
+			case 6:
+				easter = "&uarr; &uarr; &darr; &darr; &larr; &rarr; &larr; &rarr; B A";
+				break;
+			case 7:
+				easter = "&Alpha; &Epsilon; &Kappa; &Delta; &Beta;";
+				break;
+			case 8:
+				easter = "I got 99 Problems but a glitch ain't one.";
+				break;
+			case 9:
+				easter = "&Theta; = An O with a bowtie";
+				break;
+			case 10:
+				easter = "&equivDD; &ne; Cake!"
 				break;
 		}
 	}
