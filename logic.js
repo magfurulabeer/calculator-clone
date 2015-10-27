@@ -289,7 +289,7 @@ function egg() {
 				easter = "&Theta; = An O with a bowtie";
 				break;
 			case 10:
-				easter = "&equivDD; &ne; Cake!"
+				easter = "The cake is a lie!"
 				break;
 		}
 	}
